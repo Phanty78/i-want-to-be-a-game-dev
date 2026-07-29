@@ -30,6 +30,11 @@ tile_set = ExtResource("1_27hmq")
 [node name="Character" type="Node2D" parent="." unique_id=2125991947]
 
 [node name="Developer" type="Sprite2D" parent="Character" unique_id=1004602585]
+z_index = 2
+position = Vector2(256, 143)
 texture = ExtResource("2_0re8g")
+hframes = 12
+vframes = 8
+frame = 37
 
 [node name="Foreground" type="Node2D" parent="." unique_id=584083252]
