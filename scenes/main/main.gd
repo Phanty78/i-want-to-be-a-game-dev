@@ -30,6 +30,7 @@ var life_cost := 250
 @onready var date_label: Label = $UI/UIRoot/HUD/HBoxContainer/DateLabel
 @onready var money_label: Label = $UI/UIRoot/HUD/HBoxContainer/MoneyLabel
 @onready var game_clock: Timer = $GameClock
+@onready var action_menu: PopupPanel = $UI/UIRoot/ActionMenu
 
 func _ready() -> void:
 	game_clock.start(WEEK_DURATION_SECONDS)
@@ -78,10 +79,15 @@ func update_current_month() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			toggle_pause()
-			
-func toggle_pause() -> void:
-	if game_clock.paused == false:
-		game_clock.paused = true
-	else:
-		game_clock.paused = false
+			if not action_menu.visible:
+				open_action_menu()
+
+func open_action_menu() -> void:
+	game_clock.paused = true
+	action_menu.popup_centered(Vector2i(320, 160))
+
+func _on_action_menu_popup_hide() -> void:
+	game_clock.paused = false
+
+func _on_create_game_button_pressed() -> void:
+	print("lancer la creation d'un jeu")
