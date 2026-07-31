@@ -81,16 +81,22 @@ var studio_money := 10_000
 # TO-DO : plus tard ces variables changeront dans le temps en fonction de divers paramétre
 var rent_cost := 500
 var life_cost := 250
-var create_game_menu_open = false
+var create_game_menu_open := false
 
 @onready var date_label: Label = $UI/UIRoot/HUD/HBoxContainer/DateLabel
 @onready var money_label: Label = $UI/UIRoot/HUD/HBoxContainer/MoneyLabel
 @onready var game_clock: Timer = $GameClock
 @onready var action_menu: PopupPanel = $UI/UIRoot/ActionMenu
 @onready var create_game_modal: PopupPanel = $UI/UIRoot/CreateGameModal
-@onready var game_name_input: LineEdit = $UI/UIRoot/CreateGameModal/GameNameInput
+@onready var game_name_input: LineEdit = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/GameNameInput
+@onready var game_theme_select: OptionButton = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/ThemeSelect
+@onready var game_genre_select: OptionButton = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/GenreSelect
+@onready var game_platform_select: OptionButton = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/PlatformSelect
 
 func _ready() -> void:
+	setup_theme_options()
+	setup_platform_options()
+	setup_genre_options()
 	game_clock.start(WEEK_DURATION_SECONDS)
 	update_hud()
 
@@ -151,8 +157,20 @@ func _on_action_menu_popup_hide() -> void:
 func _on_create_game_button_pressed() -> void:
 	create_game_menu_open = true
 	action_menu.visible = false
-	create_game_modal.popup_centered(Vector2i(320, 160))
+	create_game_modal.popup_centered(Vector2i(500, 400))
 
 func _on_create_game_modal_popup_hide() -> void:
 	create_game_menu_open = false
 	game_clock.paused = false
+
+func setup_theme_options() -> void:
+	for theme in game_themes:
+		game_theme_select.add_item(theme.theme_name)
+
+func setup_genre_options() -> void:
+	for genre in genres:
+		game_genre_select.add_item(genre.genre_name)
+
+func setup_platform_options() -> void:
+	for platform in platforms:
+		game_platform_select.add_item(platform.platform_name)

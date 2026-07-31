@@ -65,20 +65,65 @@ layout_mode = 2
 text = "Create new Game"
 
 [node name="CreateGameModal" type="PopupPanel" parent="UI/UIRoot" unique_id=222386159]
+size = Vector2i(400, 350)
 
-[node name="Label" type="Label" parent="UI/UIRoot/CreateGameModal" unique_id=1822951908]
+[node name="MarginContainer" type="MarginContainer" parent="UI/UIRoot/CreateGameModal" unique_id=1678792918]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 96.0
-offset_bottom = 96.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/UIRoot/CreateGameModal/MarginContainer" unique_id=566612080]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=1822951908]
+layout_mode = 2
 text = "Let's create a new game."
 
-[node name="GameNameInput" type="LineEdit" parent="UI/UIRoot/CreateGameModal" unique_id=1099968732]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 96.0
-offset_bottom = 96.0
+[node name="GameNameLabel" type="Label" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=878991215]
+layout_mode = 2
+text = "Enter game name :"
+
+[node name="GameNameInput" type="LineEdit" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=1099968732]
+layout_mode = 2
 placeholder_text = "Game Name"
+
+[node name="ThemeLabel" type="Label" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=1620301920]
+layout_mode = 2
+text = "Select Theme :"
+
+[node name="ThemeSelect" type="OptionButton" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=274357733]
+layout_mode = 2
+
+[node name="GenreLabel" type="Label" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=887567019]
+layout_mode = 2
+text = "Select Genre :"
+
+[node name="GenreSelect" type="OptionButton" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=560776573]
+layout_mode = 2
+
+[node name="PlatformLabel" type="Label" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=554474116]
+layout_mode = 2
+text = "Select Platform :"
+
+[node name="PlatformSelect" type="OptionButton" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=194591631]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=1262126619]
+layout_mode = 2
+
+[node name="Cancelbutton" type="Button" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1138092708]
+layout_mode = 2
+text = "Cancel project"
+
+[node name="CreateButton" type="Button" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1088448356]
+layout_mode = 2
+text = "Start development"
 
 [node name="GameClock" type="Timer" parent="." unique_id=67344078]
 wait_time = 7.0
