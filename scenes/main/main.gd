@@ -2,7 +2,7 @@ extends Node
 
 const WEEKS_PER_YEAR := 52
 const WEEK_DURATION_SECONDS := 0.2
-var MONTHS: Array[Month] = [
+var months: Array[Month] = [
 	Month.new("January", 5),
 	Month.new("February", 4),
 	Month.new("March", 4),
@@ -17,9 +17,64 @@ var MONTHS: Array[Month] = [
 	Month.new("December", 4)
 ]
 
+var game_themes: Array[GameTheme] = [
+	GameTheme.new("Fantasy"),
+	GameTheme.new("Science Fiction"),
+	GameTheme.new("Medieval"),
+	GameTheme.new("Cyberpunk"),
+	GameTheme.new("Space"),
+	GameTheme.new("Western"),
+	GameTheme.new("Pirates"),
+	GameTheme.new("Zombies"),
+	GameTheme.new("Post-Apocalyptic"),
+	GameTheme.new("Superheroes"),
+	GameTheme.new("Espionage"),
+	GameTheme.new("Crime"),
+	GameTheme.new("Military"),
+	GameTheme.new("Mythology"),
+	GameTheme.new("Prehistory"),
+	GameTheme.new("Steampunk"),
+	GameTheme.new("School Life"),
+	GameTheme.new("Business"),
+	GameTheme.new("Ancient Egypt"),
+	GameTheme.new("Underwater")
+]
+
+var platforms: Array[Platform] = [
+	Platform.new("Magnavox Odyssey"),
+	Platform.new("Fairchild Channel F"),
+	Platform.new("Atari 2600"),
+	Platform.new("Commodore PET"),
+	Platform.new("Apple II"),
+	Platform.new("TRS-80"),
+	Platform.new("Magnavox Odyssey²"),
+	Platform.new("Intellivision"),
+	Platform.new("Atari 400"),
+	Platform.new("Atari 800"),
+	Platform.new("TI-99/4"),
+	Platform.new("Sinclair ZX80"),
+	Platform.new("Commodore VIC-20"),
+	Platform.new("Sinclair ZX81"),
+	Platform.new("IBM PC"),
+	Platform.new("BBC Micro"),
+	Platform.new("ZX Spectrum"),
+	Platform.new("Commodore 64"),
+	Platform.new("ColecoVision"),
+	Platform.new("Atari 5200")
+]
+
+var genres: Array[Genre] = [
+	Genre.new("Action"),
+	Genre.new("Adventure"),
+	Genre.new("RPG"),
+	Genre.new("Strategy"),
+	Genre.new("Simulation"),
+	Genre.new("Casual"),
+]
+
 var current_week := 1
 var weeks_count_for_month := 1
-var current_month := MONTHS[0]
+var current_month := months[0]
 var current_month_index:= 0
 var current_year := 1
 var studio_money := 10_000
@@ -74,10 +129,10 @@ func update_current_month() -> void:
 		weeks_count_for_month = 1
 		current_month_index+= 1
 		if current_month_index> 11:
-			current_month = MONTHS[0]
+			current_month = months[0]
 			current_month_index= 0
 		else :
-			current_month = MONTHS[current_month_index]
+			current_month = months[current_month_index]
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

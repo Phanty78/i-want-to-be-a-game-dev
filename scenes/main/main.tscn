@@ -74,8 +74,10 @@ offset_bottom = 96.0
 text = "Let's create a new game."
 
 [node name="GameNameInput" type="LineEdit" parent="UI/UIRoot/CreateGameModal" unique_id=1099968732]
-offset_right = 68.5
-offset_bottom = 31.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 96.0
+offset_bottom = 96.0
 placeholder_text = "Game Name"
 
 [node name="GameClock" type="Timer" parent="." unique_id=67344078]
