@@ -74,3 +74,14 @@ func update_current_month() -> void:
 			current_month_index= 0
 		else :
 			current_month = MONTHS[current_month_index]
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			toggle_pause()
+			
+func toggle_pause() -> void:
+	if game_clock.paused == false:
+		game_clock.paused = true
+	else:
+		game_clock.paused = false
