@@ -92,6 +92,7 @@ var create_game_menu_open := false
 @onready var game_theme_select: OptionButton = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/ThemeSelect
 @onready var game_genre_select: OptionButton = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/GenreSelect
 @onready var game_platform_select: OptionButton = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/PlatformSelect
+@onready var game_modal_error_message: Label = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/ErrorMessage
 
 func _ready() -> void:
 	setup_theme_options()
@@ -174,3 +175,39 @@ func setup_genre_options() -> void:
 func setup_platform_options() -> void:
 	for platform in platforms:
 		game_platform_select.add_item(platform.platform_name)
+
+func get_validated_game_name() -> String:
+	var text_to_validate = game_name_input.text
+	text_to_validate = text_to_validate.strip_edges()
+	if text_to_validate.is_empty() :
+		return ''
+	return text_to_validate
+
+func create_game() -> Game:
+	var name := get_validated_game_name()
+	var genre : Genre
+	var theme : GameTheme
+	var platform : Platform
+	var error_messages : PackedStringArray
+	if name.is_empty():
+		error_messages.append("Your game must have a name.")
+	if game_theme_select.selected == -1:
+		error_messages.append("You must select a theme.")
+	else:
+		theme = game_themes[game_theme_select.selected]
+	if game_genre_select.selected == -1:
+		error_messages.append("You must select a genre.")
+	else:
+		genre = genres[game_genre_select.selected]
+	if game_platform_select.selected == -1:
+		error_messages.append("You must select a platform.")
+	else:
+		platform = platforms[game_platform_select.selected]
+	if error_messages.is_empty():
+		game_modal_error_message.text = ''
+		return Game.new(name,theme,genre,platform)
+	game_modal_error_message.text = "\n".join(error_messages)
+	return null
+
+func _on_create_button_pressed() -> void:
+	create_game()

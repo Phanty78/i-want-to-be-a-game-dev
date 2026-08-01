@@ -73,8 +73,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
+offset_right = 396.0
+offset_bottom = 346.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -92,6 +92,7 @@ text = "Enter game name :"
 [node name="GameNameInput" type="LineEdit" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=1099968732]
 layout_mode = 2
 placeholder_text = "Game Name"
+max_length = 50
 
 [node name="ThemeLabel" type="Label" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=1620301920]
 layout_mode = 2
@@ -114,6 +115,9 @@ text = "Select Platform :"
 [node name="PlatformSelect" type="OptionButton" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=194591631]
 layout_mode = 2
 
+[node name="ErrorMessage" type="Label" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=351977125]
+layout_mode = 2
+
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer" unique_id=1262126619]
 layout_mode = 2
 
@@ -131,4 +135,5 @@ wait_time = 7.0
 [connection signal="popup_hide" from="UI/UIRoot/ActionMenu" to="." method="_on_action_menu_popup_hide"]
 [connection signal="pressed" from="UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/CreateGameButton" to="." method="_on_create_game_button_pressed"]
 [connection signal="popup_hide" from="UI/UIRoot/CreateGameModal" to="." method="_on_create_game_modal_popup_hide"]
+[connection signal="pressed" from="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/HBoxContainer/CreateButton" to="." method="_on_create_button_pressed"]
 [connection signal="timeout" from="GameClock" to="." method="_on_game_clock_timeout"]
