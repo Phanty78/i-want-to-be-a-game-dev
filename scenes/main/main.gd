@@ -82,6 +82,8 @@ var studio_money := 10_000
 var rent_cost := 500
 var life_cost := 250
 var create_game_menu_open := false
+var finished_games : Array[Game]
+var games_in_development : Game
 
 @onready var date_label: Label = $UI/UIRoot/HUD/HBoxContainer/DateLabel
 @onready var money_label: Label = $UI/UIRoot/HUD/HBoxContainer/MoneyLabel
@@ -93,6 +95,7 @@ var create_game_menu_open := false
 @onready var game_genre_select: OptionButton = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/GenreSelect
 @onready var game_platform_select: OptionButton = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/PlatformSelect
 @onready var game_modal_error_message: Label = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/ErrorMessage
+@onready var create_game_button: Button = $UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/CreateGameButton
 
 func _ready() -> void:
 	setup_theme_options()
@@ -156,9 +159,12 @@ func _on_action_menu_popup_hide() -> void:
 		game_clock.paused = false
 
 func _on_create_game_button_pressed() -> void:
-	create_game_menu_open = true
-	action_menu.visible = false
-	create_game_modal.popup_centered(Vector2i(500, 400))
+	if not games_in_development:
+		create_game_menu_open = true
+		action_menu.visible = false
+		create_game_modal.popup_centered(Vector2i(500, 400))
+	else:
+		create_game_button.disabled
 
 func _on_create_game_modal_popup_hide() -> void:
 	create_game_menu_open = false
@@ -204,10 +210,14 @@ func create_game() -> Game:
 	else:
 		platform = platforms[game_platform_select.selected]
 	if error_messages.is_empty():
-		game_modal_error_message.text = ''
 		return Game.new(name,theme,genre,platform)
 	game_modal_error_message.text = "\n".join(error_messages)
 	return null
 
 func _on_create_button_pressed() -> void:
-	create_game()
+	var game := create_game()
+	if game:
+		games_in_development = game
+		game_modal_error_message.text = ""
+		game_name_input.text = ""
+		create_game_modal.visible = false
