@@ -83,7 +83,7 @@ var rent_cost := 500
 var life_cost := 250
 var create_game_menu_open := false
 var finished_games : Array[Game]
-var games_in_development : Game
+var game_in_development : Game
 
 @onready var date_label: Label = $UI/UIRoot/HUD/HBoxContainer/DateLabel
 @onready var money_label: Label = $UI/UIRoot/HUD/HBoxContainer/MoneyLabel
@@ -159,7 +159,7 @@ func _on_action_menu_popup_hide() -> void:
 		game_clock.paused = false
 
 func _on_create_game_button_pressed() -> void:
-	if not games_in_development:
+	if not game_in_development:
 		create_game_menu_open = true
 		action_menu.visible = false
 		create_game_modal.popup_centered(Vector2i(500, 400))
@@ -217,7 +217,7 @@ func create_game() -> Game:
 func _on_create_button_pressed() -> void:
 	var game := create_game()
 	if game:
-		games_in_development = game
+		game_in_development = game
 		game_modal_error_message.text = ""
 		game_name_input.text = ""
 		create_game_modal.visible = false
