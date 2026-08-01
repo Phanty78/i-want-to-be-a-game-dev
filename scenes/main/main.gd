@@ -78,6 +78,8 @@ var current_month := months[0]
 var current_month_index:= 0
 var current_year := 1
 var studio_money := 10_000
+# Exprimé en semaine
+var game_development_duration := 12
 # TO-DO : plus tard ces variables changeront dans le temps en fonction de divers paramétre
 var rent_cost := 500
 var life_cost := 250
@@ -112,7 +114,15 @@ func _on_game_clock_timeout() -> void:
 	if current_week > WEEKS_PER_YEAR:
 		current_week = 1
 		current_year += 1
-		
+	
+	if game_in_development != null:
+		game_in_development.game_remaining_development_time -= 1
+		print(game_in_development.game_remaining_development_time)
+		if game_in_development.game_remaining_development_time <= 0:
+			finished_games.append(game_in_development)
+			game_in_development = null
+			create_game_button.disabled = false
+	
 	update_hud()
 
 func update_date_label() -> void:
@@ -163,8 +173,7 @@ func _on_create_game_button_pressed() -> void:
 		create_game_menu_open = true
 		action_menu.visible = false
 		create_game_modal.popup_centered(Vector2i(500, 400))
-	else:
-		create_game_button.disabled
+		
 
 func _on_create_game_modal_popup_hide() -> void:
 	create_game_menu_open = false
@@ -210,13 +219,14 @@ func create_game() -> Game:
 	else:
 		platform = platforms[game_platform_select.selected]
 	if error_messages.is_empty():
-		return Game.new(name,theme,genre,platform)
+		return Game.new(name,theme,genre,platform,game_development_duration)
 	game_modal_error_message.text = "\n".join(error_messages)
 	return null
 
 func _on_create_button_pressed() -> void:
 	var game := create_game()
 	if game:
+		create_game_button.disabled = true
 		game_in_development = game
 		game_modal_error_message.text = ""
 		game_name_input.text = ""
