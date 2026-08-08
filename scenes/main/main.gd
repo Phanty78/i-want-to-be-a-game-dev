@@ -98,6 +98,8 @@ var game_in_development : Game
 @onready var game_platform_select: OptionButton = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/PlatformSelect
 @onready var game_modal_error_message: Label = $UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/ErrorMessage
 @onready var create_game_button: Button = $UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/CreateGameButton
+@onready var game_over_modal: PopupPanel = $UI/UIRoot/GameOverModal
+@onready var game_over_modal_label: Label = $UI/UIRoot/GameOverModal/MarginContainer/VBoxContainer/GameOverMessage
 
 func _ready() -> void:
 	setup_theme_options()
@@ -128,6 +130,9 @@ func _on_game_clock_timeout() -> void:
 			game_in_development = null
 			create_game_button.disabled = false
 	
+	if studio_money <= 0:
+		game_clock.stop()
+		display_bankrupcy_modal()
 	update_hud()
 
 func update_date_label() -> void:
@@ -179,7 +184,6 @@ func _on_create_game_button_pressed() -> void:
 		action_menu.visible = false
 		create_game_modal.popup_centered(Vector2i(500, 400))
 		
-
 func _on_create_game_modal_popup_hide() -> void:
 	create_game_menu_open = false
 	game_clock.paused = false
@@ -249,3 +253,8 @@ func get_game_note(game: Game) -> int:
 	var base := randi() % 10 + 1
 	var affinity := game.game_theme.genre_affinity.get_affinity(game.game_genre)
 	return clampi(base + affinity, 1, 10)
+
+func display_bankrupcy_modal() -> void:
+	if studio_money <= 0:
+		game_over_modal_label.text = "Game Over! You ran out of money."
+	game_over_modal.popup_centered(Vector2i(320, 160))
