@@ -258,3 +258,19 @@ func display_bankrupcy_modal() -> void:
 	if studio_money <= 0:
 		game_over_modal_label.text = "Game Over! You ran out of money."
 	game_over_modal.popup_centered(Vector2i(320, 160))
+
+func reset_game() -> void:
+	current_week = 1
+	weeks_count_for_month = 1
+	current_month = months[0]
+	current_month_index= 0
+	current_year = 1
+	studio_money = 10_000
+	game_in_development = null
+	finished_games.clear()
+	game_clock.start(WEEK_DURATION_SECONDS)
+	update_hud()
+
+func _on_new_game_button_pressed() -> void:
+	reset_game()
+	game_over_modal.visible = false

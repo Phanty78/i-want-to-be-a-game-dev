@@ -152,4 +152,6 @@ wait_time = 7.0
 [connection signal="pressed" from="UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/CreateGameButton" to="." method="_on_create_game_button_pressed"]
 [connection signal="popup_hide" from="UI/UIRoot/CreateGameModal" to="." method="_on_create_game_modal_popup_hide"]
 [connection signal="pressed" from="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/HBoxContainer/CreateButton" to="." method="_on_create_button_pressed"]
+[connection signal="popup_hide" from="UI/UIRoot/GameOverModal" to="." method="_on_game_over_modal_popup_hide"]
+[connection signal="pressed" from="UI/UIRoot/GameOverModal/MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="timeout" from="GameClock" to="." method="_on_game_clock_timeout"]
