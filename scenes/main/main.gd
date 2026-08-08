@@ -103,8 +103,12 @@ func _ready() -> void:
 	setup_theme_options()
 	setup_platform_options()
 	setup_genre_options()
+	setup_theme_affinities()
 	game_clock.start(WEEK_DURATION_SECONDS)
 	update_hud()
+
+func setup_theme_affinities() -> void:
+	ThemeAffinityData.setup(game_themes, genres)
 
 func _on_game_clock_timeout() -> void:
 	current_week += 1
@@ -119,6 +123,7 @@ func _on_game_clock_timeout() -> void:
 		game_in_development.game_remaining_development_time -= 1
 		print(game_in_development.game_remaining_development_time)
 		if game_in_development.game_remaining_development_time <= 0:
+			release_game()
 			finished_games.append(game_in_development)
 			game_in_development = null
 			create_game_button.disabled = false
@@ -199,12 +204,12 @@ func get_validated_game_name() -> String:
 	return text_to_validate
 
 func create_game() -> Game:
-	var name := get_validated_game_name()
+	var game_name := get_validated_game_name()
 	var genre : Genre
 	var theme : GameTheme
 	var platform : Platform
 	var error_messages : PackedStringArray
-	if name.is_empty():
+	if game_name.is_empty():
 		error_messages.append("Your game must have a name.")
 	if game_theme_select.selected == -1:
 		error_messages.append("You must select a theme.")
@@ -219,7 +224,7 @@ func create_game() -> Game:
 	else:
 		platform = platforms[game_platform_select.selected]
 	if error_messages.is_empty():
-		return Game.new(name,theme,genre,platform,game_development_duration)
+		return Game.new(game_name,theme,genre,platform,game_development_duration)
 	game_modal_error_message.text = "\n".join(error_messages)
 	return null
 
@@ -231,3 +236,16 @@ func _on_create_button_pressed() -> void:
 		game_modal_error_message.text = ""
 		game_name_input.text = ""
 		create_game_modal.visible = false
+
+func release_game() -> void:
+	var game_note := get_game_note(game_in_development)
+	print("Game released with note: %d" % game_note)
+	studio_money += 1000 * game_note
+	print("Game release you gained %d $" % (1000 * game_note))
+
+# Note finale = base aléatoire (1-10) bonus d'affinité thème/genre (0-4).
+# Un couple très compatible peut grimper la note ; un couple mauvais reste sur la base.
+func get_game_note(game: Game) -> int:
+	var base := randi() % 10 + 1
+	var affinity := game.game_theme.genre_affinity.get_affinity(game.game_genre)
+	return clampi(base + affinity, 1, 10)
