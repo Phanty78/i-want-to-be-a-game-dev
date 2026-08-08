@@ -100,6 +100,11 @@ var game_in_development : Game
 @onready var create_game_button: Button = $UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/CreateGameButton
 @onready var game_over_modal: PopupPanel = $UI/UIRoot/GameOverModal
 @onready var game_over_modal_label: Label = $UI/UIRoot/GameOverModal/MarginContainer/VBoxContainer/GameOverMessage
+@onready var game_released_modal: PopupPanel = $UI/UIRoot/GameReleasedModal
+@onready var game_released_label: Label = $UI/UIRoot/GameReleasedModal/MarginContainer/VBoxContainer/GameRealeasedLabel
+@onready var score_released_label: Label = $UI/UIRoot/GameReleasedModal/MarginContainer/VBoxContainer/ScoreLabel
+@onready var game_released_critic_label: Label = $UI/UIRoot/GameReleasedModal/MarginContainer/VBoxContainer/CriticLabel
+@onready var game_released_money_label: Label = $UI/UIRoot/GameReleasedModal/MarginContainer/VBoxContainer/MoneyGainLabel
 
 func _ready() -> void:
 	setup_theme_options()
@@ -243,9 +248,14 @@ func _on_create_button_pressed() -> void:
 
 func release_game() -> void:
 	var game_note := get_game_note(game_in_development)
-	print("Game released with note: %d" % game_note)
+	var game_critic := get_game_critic(game_note)
+	game_released_critic_label.text = game_critic
+	game_released_label.text = "Your game %s has been released!" % game_in_development.game_name
+	score_released_label.text = "Score: %d/10" % game_note
 	studio_money += 1000 * game_note
-	print("Game release you gained %d $" % (1000 * game_note))
+	game_released_money_label.text = "You earned %d $" % (1000 * game_note)
+	game_clock.paused = true
+	game_released_modal.popup_centered(Vector2i(500, 400))
 
 # Note finale = base aléatoire (1-10) bonus d'affinité thème/genre (0-4).
 # Un couple très compatible peut grimper la note ; un couple mauvais reste sur la base.
@@ -274,3 +284,19 @@ func reset_game() -> void:
 func _on_new_game_button_pressed() -> void:
 	reset_game()
 	game_over_modal.visible = false
+
+func get_game_critic(score : int) -> String:
+	assert(score >= 0 and score <= 11, "Score must be between 0 and 11")
+	if score <= 3:
+		return "Not bad for propping up a piece of furniture"
+	if score <= 5:
+		return "So-so..."
+	if score <= 7:
+		return "Not bad"
+	if score <= 9:
+		return "A mist!"
+	return "A new benchmark in the genre!"
+
+
+func _on_game_released_modal_popup_hide() -> void:
+	game_clock.paused = false
