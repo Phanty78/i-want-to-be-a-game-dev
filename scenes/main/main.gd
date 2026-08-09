@@ -75,13 +75,10 @@ func update_hud() -> void:
 	update_date_label()
 	update_money_label()
 
-func get_monthly_studio_cost() -> int:
-	return studio.rent_cost + studio.life_cost
-
 func pay_monthly_studio_cost() -> void:
 	# Ici le plus 1 permet d'anticiper. Car la valeur réelle ne change que lors de l'appel de la fonction advance_month
 	if game_calendar.weeks_count_for_month + 1 > game_calendar.current_month.duration_in_weeks:
-		studio.money -= get_monthly_studio_cost()
+		studio.money -= studio.get_monthly_studio_cost()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
