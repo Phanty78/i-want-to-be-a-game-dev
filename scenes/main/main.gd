@@ -1,61 +1,8 @@
 extends Node
 
-
-
-var game_themes: Array[GameTheme] = [
-	GameTheme.new("Fantasy"),
-	GameTheme.new("Science Fiction"),
-	GameTheme.new("Medieval"),
-	GameTheme.new("Cyberpunk"),
-	GameTheme.new("Space"),
-	GameTheme.new("Western"),
-	GameTheme.new("Pirates"),
-	GameTheme.new("Zombies"),
-	GameTheme.new("Post-Apocalyptic"),
-	GameTheme.new("Superheroes"),
-	GameTheme.new("Espionage"),
-	GameTheme.new("Crime"),
-	GameTheme.new("Military"),
-	GameTheme.new("Mythology"),
-	GameTheme.new("Prehistory"),
-	GameTheme.new("Steampunk"),
-	GameTheme.new("School Life"),
-	GameTheme.new("Business"),
-	GameTheme.new("Ancient Egypt"),
-	GameTheme.new("Underwater")
-]
-
-var platforms: Array[Platform] = [
-	Platform.new("Magnavox Odyssey"),
-	Platform.new("Fairchild Channel F"),
-	Platform.new("Atari 2600"),
-	Platform.new("Commodore PET"),
-	Platform.new("Apple II"),
-	Platform.new("TRS-80"),
-	Platform.new("Magnavox Odyssey²"),
-	Platform.new("Intellivision"),
-	Platform.new("Atari 400"),
-	Platform.new("Atari 800"),
-	Platform.new("TI-99/4"),
-	Platform.new("Sinclair ZX80"),
-	Platform.new("Commodore VIC-20"),
-	Platform.new("Sinclair ZX81"),
-	Platform.new("IBM PC"),
-	Platform.new("BBC Micro"),
-	Platform.new("ZX Spectrum"),
-	Platform.new("Commodore 64"),
-	Platform.new("ColecoVision"),
-	Platform.new("Atari 5200")
-]
-
-var genres: Array[Genre] = [
-	Genre.new("Action"),
-	Genre.new("Adventure"),
-	Genre.new("RPG"),
-	Genre.new("Strategy"),
-	Genre.new("Simulation"),
-	Genre.new("Casual"),
-]
+var themes : Array[GameTheme] = ThemeData.create_themes()
+var platforms : Array[Platform] = PlatformsData.create_platforms()
+var genres : Array[Genre] = GenresData.create_genres()
 
 var studio = Studio.new()
 var game_calendar = GameCalendar.new()
@@ -93,7 +40,7 @@ func _ready() -> void:
 	update_hud()
 
 func setup_theme_affinities() -> void:
-	ThemeAffinityData.setup(game_themes, genres)
+	ThemeAffinityData.setup(themes, genres)
 
 func _on_game_clock_timeout() -> void:
 	game_calendar.current_week += 1
@@ -172,7 +119,7 @@ func _on_create_game_modal_popup_hide() -> void:
 	game_clock.paused = false
 
 func setup_theme_options() -> void:
-	for theme in game_themes:
+	for theme in themes:
 		game_theme_select.add_item(theme.theme_name)
 
 func setup_genre_options() -> void:
@@ -201,7 +148,7 @@ func create_game() -> Game:
 	if game_theme_select.selected == -1:
 		error_messages.append("You must select a theme.")
 	else:
-		theme = game_themes[game_theme_select.selected]
+		theme = themes[game_theme_select.selected]
 	if game_genre_select.selected == -1:
 		error_messages.append("You must select a genre.")
 	else:
