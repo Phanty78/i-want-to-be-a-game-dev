@@ -6,6 +6,8 @@ var genres : Array[Genre] = GenresData.create_genres()
 
 var studio = Studio.new()
 var game_calendar = GameCalendar.new()
+var scoring = GameScoring.new()
+var critics = GameCritics.new()
 
 # Exprimé en semaine
 var game_development_duration := 12
@@ -158,8 +160,8 @@ func _on_create_button_pressed() -> void:
 		create_game_modal.visible = false
 
 func release_game() -> void:
-	var game_note := get_game_note(studio.game_in_development)
-	var game_critic := get_game_critic(game_note)
+	var game_note := scoring.get_game_note(studio.game_in_development)
+	var game_critic := critics.get_game_critic(game_note)
 	game_released_critic_label.text = game_critic
 	game_released_label.text = "Your game %s has been released!" % studio.game_in_development.game_name
 	score_released_label.text = "Score: %d/10" % game_note
@@ -167,13 +169,6 @@ func release_game() -> void:
 	game_released_money_label.text = "You earned %d $" % (1000 * game_note)
 	game_clock.paused = true
 	game_released_modal.popup_centered(Vector2i(500, 400))
-
-# Note finale = base aléatoire (1-10) bonus d'affinité thème/genre (0-4).
-# Un couple très compatible peut grimper la note ; un couple mauvais reste sur la base.
-func get_game_note(game: Game) -> int:
-	var base := randi() % 10 + 1
-	var affinity := game.game_theme.genre_affinity.get_affinity(game.game_genre)
-	return clampi(base + affinity, 1, 10)
 
 func display_bankrupcy_modal() -> void:
 	if studio.money <= 0:
@@ -195,19 +190,6 @@ func reset_game() -> void:
 func _on_new_game_button_pressed() -> void:
 	reset_game()
 	game_over_modal.visible = false
-
-func get_game_critic(score : int) -> String:
-	assert(score >= 0 and score <= 11, "Score must be between 0 and 11")
-	if score <= 3:
-		return "Not bad for propping up a piece of furniture"
-	if score <= 5:
-		return "So-so..."
-	if score <= 7:
-		return "Not bad"
-	if score <= 9:
-		return "A mist!"
-	return "A new benchmark in the genre!"
-
 
 func _on_game_released_modal_popup_hide() -> void:
 	game_clock.paused = false
