@@ -160,6 +160,8 @@ func _on_create_button_pressed() -> void:
 	var game := create_game()
 	click_sound.play()
 	if game:
+		studio.money -= GamesData.game_developement_cost
+		pay_sound.play()
 		create_game_button.disabled = true
 		studio.game_in_development = game
 		game_modal_error_message.text = ""
