@@ -214,6 +214,7 @@ stream = ExtResource("6_ow5a4")
 [connection signal="pressed" from="UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/CreateGameButton" to="." method="_on_create_game_button_pressed"]
 [connection signal="pressed" from="UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/ConsultRelesedGamesButton" to="." method="_on_consult_relesed_games_button_pressed"]
 [connection signal="popup_hide" from="UI/UIRoot/CreateGameModal" to="." method="_on_create_game_modal_popup_hide"]
+[connection signal="pressed" from="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/HBoxContainer/Cancelbutton" to="." method="_on_cancelbutton_pressed"]
 [connection signal="pressed" from="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/HBoxContainer/CreateButton" to="." method="_on_create_button_pressed"]
 [connection signal="pressed" from="UI/UIRoot/GameOverModal/MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="popup_hide" from="UI/UIRoot/GameReleasedModal" to="." method="_on_game_released_modal_popup_hide"]

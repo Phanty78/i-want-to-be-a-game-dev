@@ -227,3 +227,10 @@ func update_released_games_list() -> void:
 	for game in studio.finished_games:
 		released_games_text += "Name: %s | Score: %d/10 | Critic: %s\n" % [game.game_name, game.game_score, game.game_critic]
 	released_games_list_label.text = released_games_text
+
+
+func _on_cancelbutton_pressed() -> void:
+	click_sound.play()
+	create_game_modal.visible = false
+	action_menu.visible = true
+	game_clock.paused = true
