@@ -53,7 +53,6 @@ func _on_game_clock_timeout() -> void:
 		print(studio.game_in_development.game_remaining_development_time)
 		if studio.game_in_development.game_remaining_development_time <= 0:
 			release_game()
-			studio.finished_games.append(studio.game_in_development)
 			studio.game_in_development = null
 			create_game_button.disabled = false
 	
@@ -130,8 +129,6 @@ func create_game() -> Game:
 	var theme : GameTheme
 	var platform : Platform
 	var error_messages : PackedStringArray
-	var note : int
-	var critic : String
 	if game_name.is_empty():
 		error_messages.append("Your game must have a name.")
 	if game_theme_select.selected == -1:
@@ -161,18 +158,21 @@ func _on_create_button_pressed() -> void:
 		create_game_modal.visible = false
 
 func release_game() -> void:
+	var game = studio.game_in_development
 	var game_note := GameScoring.get_game_note(studio.game_in_development)
 	var game_critic := GameCritics.get_game_critic(game_note)
-	Game.game_score = game_note
-	Game.game_critic = game_critic
+
+	game.game_score = game_note
+	game.game_critic = game_critic
+
+	studio.finished_games.append(game)
+	update_released_games_list()
+
 	game_released_critic_label.text = game_critic
-	game_released_label.text = "Your game %s has been released!" % studio.game_in_development.game_name
+	game_released_label.text = "Your game %s has been released!" % game.game_name
 	score_released_label.text = "Score: %d/10" % game_note
 	studio.money += 1000 * game_note
 	game_released_money_label.text = "You earned %d $" % (1000 * game_note)
-	GamesData.games_released.append(studio.game_in_development)
-	for released_game in GamesData.games_released:
-		released_games_list_label.text += "- %s - Score: %d/10 - Critic: %s\n" % [released_game.game_name, released_game.game_score, released_game.game_critic]
 	game_clock.paused = true
 	game_released_modal.popup_centered(Vector2i(500, 400))
 
@@ -207,3 +207,9 @@ func _on_consult_relesed_games_button_pressed() -> void:
 
 func _on_released_games_modal_popup_hide() -> void:
 	game_clock.paused = false
+
+func update_released_games_list() -> void:
+	var released_games_text := ""
+	for game in studio.finished_games:
+		released_games_text += "Name: %s | Score: %d/10 | Critic: %s\n" % [game.game_name, game.game_score, game.game_critic]
+	released_games_list_label.text = released_games_text

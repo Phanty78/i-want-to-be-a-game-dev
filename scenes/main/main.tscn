@@ -177,13 +177,17 @@ layout_mode = 2
 [node name="ReleasedGamesModal" type="PopupPanel" parent="UI/UIRoot" unique_id=1268792710]
 
 [node name="ModalTitleLabel" type="Label" parent="UI/UIRoot/ReleasedGamesModal" unique_id=393352034]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 96.0
+offset_bottom = 96.0
 text = "Released Games"
 
 [node name="ReleasedGamesListLabel" type="Label" parent="UI/UIRoot/ReleasedGamesModal" unique_id=399765165]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 96.0
+offset_bottom = 96.0
 
 [node name="GameClock" type="Timer" parent="." unique_id=67344078]
 wait_time = 7.0
