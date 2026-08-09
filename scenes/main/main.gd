@@ -1,21 +1,6 @@
 extends Node
 
-const WEEKS_PER_YEAR := 52
-const WEEK_DURATION_SECONDS := 0.2
-var months: Array[Month] = [
-	Month.new("January", 5),
-	Month.new("February", 4),
-	Month.new("March", 4),
-	Month.new("April", 4),
-	Month.new("May", 5),
-	Month.new("June", 4),
-	Month.new("July", 4),
-	Month.new("August", 5),
-	Month.new("September", 4),
-	Month.new("October", 5),
-	Month.new("November", 4),
-	Month.new("December", 4)
-]
+
 
 var game_themes: Array[GameTheme] = [
 	GameTheme.new("Fantasy"),
@@ -73,12 +58,8 @@ var genres: Array[Genre] = [
 ]
 
 var studio = Studio.new()
+var game_calendar = GameCalendar.new()
 
-var current_week := 1
-var weeks_count_for_month := 1
-var current_month := months[0]
-var current_month_index:= 0
-var current_year := 1
 # Exprimé en semaine
 var game_development_duration := 12
 # TO-DO : plus tard ces variables changeront dans le temps en fonction de divers paramétre
@@ -108,20 +89,20 @@ func _ready() -> void:
 	setup_platform_options()
 	setup_genre_options()
 	setup_theme_affinities()
-	game_clock.start(WEEK_DURATION_SECONDS)
+	game_clock.start(game_calendar.WEEK_DURATION_SECONDS)
 	update_hud()
 
 func setup_theme_affinities() -> void:
 	ThemeAffinityData.setup(game_themes, genres)
 
 func _on_game_clock_timeout() -> void:
-	current_week += 1
-	
+	game_calendar.current_week += 1
+
 	update_current_month()
 
-	if current_week > WEEKS_PER_YEAR:
-		current_week = 1
-		current_year += 1
+	if game_calendar.current_week > game_calendar.WEEKS_PER_YEAR:
+		game_calendar.current_week = 1
+		game_calendar.current_year += 1
 	
 	if studio.game_in_development != null:
 		studio.game_in_development.game_remaining_development_time -= 1
@@ -139,9 +120,9 @@ func _on_game_clock_timeout() -> void:
 
 func update_date_label() -> void:
 	date_label.text = "Year %d - Month %s - Week %d" % [
-		current_year,
-		current_month.month_name,
-		weeks_count_for_month
+		game_calendar.current_year,
+		game_calendar.current_month.month_name,
+		game_calendar.weeks_count_for_month
 	]
 
 func update_money_label() -> void:
@@ -155,16 +136,16 @@ func get_monthly_studio_cost() -> int:
 	return studio.rent_cost + studio.life_cost
 
 func update_current_month() -> void:
-	weeks_count_for_month += 1
-	if weeks_count_for_month > current_month.duration_in_weeks:
+	game_calendar.weeks_count_for_month += 1
+	if game_calendar.weeks_count_for_month > game_calendar.current_month.duration_in_weeks:
 		studio.money -= get_monthly_studio_cost()
-		weeks_count_for_month = 1
-		current_month_index+= 1
-		if current_month_index> 11:
-			current_month = months[0]
-			current_month_index= 0
+		game_calendar.weeks_count_for_month = 1
+		game_calendar.current_month_index += 1
+		if game_calendar.current_month_index > 11:
+			game_calendar.current_month = game_calendar.months[0]
+			game_calendar.current_month_index = 0
 		else :
-			current_month = months[current_month_index]
+			game_calendar.current_month = game_calendar.months[game_calendar.current_month_index]
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -267,15 +248,15 @@ func display_bankrupcy_modal() -> void:
 	game_over_modal.popup_centered(Vector2i(320, 160))
 
 func reset_game() -> void:
-	current_week = 1
-	weeks_count_for_month = 1
-	current_month = months[0]
-	current_month_index= 0
-	current_year = 1
+	game_calendar.current_week = 1
+	game_calendar.weeks_count_for_month = 1
+	game_calendar.current_month = game_calendar.months[0]
+	game_calendar.current_month_index = 0
+	game_calendar.current_year = 1
 	studio.money = 10_000
 	studio.game_in_development = null
 	studio.finished_games.clear()
-	game_clock.start(WEEK_DURATION_SECONDS)
+	game_clock.start(game_calendar.WEEK_DURATION_SECONDS)
 	update_hud()
 
 func _on_new_game_button_pressed() -> void:
