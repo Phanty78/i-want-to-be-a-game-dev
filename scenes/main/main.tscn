@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://daq2pi54mmcdr" path="res://Assets/audio/music_loop.wav" id="3_k2fmo"]
 [ext_resource type="AudioStream" uid="uid://o6iim3g68s8d" path="res://Assets/audio/cash_machine.wav" id="4_l3cfh"]
 [ext_resource type="AudioStream" uid="uid://w1j0oohnk4y5" path="res://Assets/audio/pay.wav" id="5_6q06x"]
+[ext_resource type="AudioStream" uid="uid://bdylbd1g8rjj6" path="res://Assets/audio/click.wav" id="6_ow5a4"]
 
 [node name="Main" type="Node" unique_id=1862332818]
 script = ExtResource("1_iuonh")
@@ -197,6 +198,7 @@ wait_time = 7.0
 
 [node name="MusicLoop" type="AudioStreamPlayer" parent="." unique_id=747772320]
 stream = ExtResource("3_k2fmo")
+volume_db = -10.0
 autoplay = true
 
 [node name="CashSound" type="AudioStreamPlayer" parent="." unique_id=372930109]
@@ -204,6 +206,9 @@ stream = ExtResource("4_l3cfh")
 
 [node name="PaySound" type="AudioStreamPlayer" parent="." unique_id=209264500]
 stream = ExtResource("5_6q06x")
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=469579585]
+stream = ExtResource("6_ow5a4")
 
 [connection signal="popup_hide" from="UI/UIRoot/ActionMenu" to="." method="_on_action_menu_popup_hide"]
 [connection signal="pressed" from="UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/CreateGameButton" to="." method="_on_create_game_button_pressed"]

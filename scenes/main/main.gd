@@ -33,6 +33,7 @@ var create_game_menu_open := false
 @onready var released_games_list_label: Label = $UI/UIRoot/ReleasedGamesModal/ReleasedGamesListLabel
 @onready var cash_sound: AudioStreamPlayer = $CashSound
 @onready var pay_sound: AudioStreamPlayer = $PaySound
+@onready var click_sound : AudioStreamPlayer = $ClickSound
 
 func _ready() -> void:
 	setup_theme_options()
@@ -88,6 +89,7 @@ func _input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			if not action_menu.visible:
 				open_action_menu()
+				click_sound.play()
 
 func open_action_menu() -> void:
 	game_clock.paused = true
@@ -99,6 +101,7 @@ func _on_action_menu_popup_hide() -> void:
 
 func _on_create_game_button_pressed() -> void:
 	if not studio.game_in_development:
+		click_sound.play()
 		create_game_menu_open = true
 		action_menu.visible = false
 		create_game_modal.popup_centered(Vector2i(500, 400))
@@ -153,6 +156,7 @@ func create_game() -> Game:
 
 func _on_create_button_pressed() -> void:
 	var game := create_game()
+	click_sound.play()
 	if game:
 		create_game_button.disabled = true
 		studio.game_in_development = game
@@ -198,6 +202,7 @@ func reset_game() -> void:
 	update_hud()
 
 func _on_new_game_button_pressed() -> void:
+	click_sound.play()
 	reset_game()
 	game_over_modal.visible = false
 
@@ -205,6 +210,7 @@ func _on_game_released_modal_popup_hide() -> void:
 	game_clock.paused = false
 
 func _on_consult_relesed_games_button_pressed() -> void:
+	click_sound.play()
 	action_menu.visible = false
 	game_clock.paused = true
 	released_games_modal.popup_centered(Vector2i(500, 400))
