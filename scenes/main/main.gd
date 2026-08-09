@@ -6,8 +6,6 @@ var genres : Array[Genre] = GenresData.create_genres()
 
 var studio = Studio.new()
 var game_calendar = GameCalendar.new()
-var scoring = GameScoring.new()
-var critics = GameCritics.new()
 
 # Exprimé en semaine
 var game_development_duration := 12
@@ -160,8 +158,8 @@ func _on_create_button_pressed() -> void:
 		create_game_modal.visible = false
 
 func release_game() -> void:
-	var game_note := scoring.get_game_note(studio.game_in_development)
-	var game_critic := critics.get_game_critic(game_note)
+	var game_note := GameScoring.get_game_note(studio.game_in_development)
+	var game_critic := GameCritics.get_game_critic(game_note)
 	game_released_critic_label.text = game_critic
 	game_released_label.text = "Your game %s has been released!" % studio.game_in_development.game_name
 	score_released_label.text = "Score: %d/10" % game_note

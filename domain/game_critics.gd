@@ -1,6 +1,6 @@
 class_name GameCritics
 
-func get_game_critic(score : int) -> String:
+static func get_game_critic(score : int) -> String:
 	assert(score >= 0 and score <= 11, "Score must be between 0 and 11")
 	if score <= 3:
 		return "Not bad for propping up a piece of furniture"
