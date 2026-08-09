@@ -31,6 +31,8 @@ var create_game_menu_open := false
 @onready var consult_released_games_button: Button = $UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/ConsultRelesedGamesButton
 @onready var released_games_modal: PopupPanel = $UI/UIRoot/ReleasedGamesModal
 @onready var released_games_list_label: Label = $UI/UIRoot/ReleasedGamesModal/ReleasedGamesListLabel
+@onready var cash_sound: AudioStreamPlayer = $CashSound
+@onready var pay_sound: AudioStreamPlayer = $PaySound
 
 func _ready() -> void:
 	setup_theme_options()
@@ -79,6 +81,7 @@ func pay_monthly_studio_cost() -> void:
 	# Ici le plus 1 permet d'anticiper. Car la valeur réelle ne change que lors de l'appel de la fonction advance_month
 	if game_calendar.weeks_count_for_month + 1 > game_calendar.current_month.duration_in_weeks:
 		studio.money -= studio.get_monthly_studio_cost()
+		pay_sound.play()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -173,6 +176,7 @@ func release_game() -> void:
 	score_released_label.text = "Score: %d/10" % game_note
 	studio.money += 1000 * game_note
 	game_released_money_label.text = "You earned %d $" % (1000 * game_note)
+	cash_sound.play()
 	game_clock.paused = true
 	game_released_modal.popup_centered(Vector2i(500, 400))
 

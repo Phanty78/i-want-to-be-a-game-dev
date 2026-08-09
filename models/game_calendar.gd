@@ -1,7 +1,7 @@
 class_name GameCalendar
 
 const WEEKS_PER_YEAR := 52
-const WEEK_DURATION_SECONDS := 0.2
+const WEEK_DURATION_SECONDS := 7
 
 var months: Array[Month] = [
 	Month.new("January", 5),
