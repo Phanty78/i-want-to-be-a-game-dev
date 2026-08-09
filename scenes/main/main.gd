@@ -135,6 +135,8 @@ func create_game() -> Game:
 	var theme : GameTheme
 	var platform : Platform
 	var error_messages : PackedStringArray
+	if studio.money < GamesData.game_developement_cost:
+		error_messages.append("You don't have enough money to create a game.")
 	if game_name.is_empty():
 		error_messages.append("Your game must have a name.")
 	if game_theme_select.selected == -1:
