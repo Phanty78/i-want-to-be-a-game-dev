@@ -7,8 +7,6 @@ var genres : Array[Genre] = GenresData.create_genres()
 var studio = Studio.new()
 var game_calendar = GameCalendar.new()
 
-# Exprimé en semaine
-var game_development_duration := 12
 # TO-DO : plus tard ces variables changeront dans le temps en fonction de divers paramétre
 var create_game_menu_open := false
 
@@ -30,6 +28,9 @@ var create_game_menu_open := false
 @onready var score_released_label: Label = $UI/UIRoot/GameReleasedModal/MarginContainer/VBoxContainer/ScoreLabel
 @onready var game_released_critic_label: Label = $UI/UIRoot/GameReleasedModal/MarginContainer/VBoxContainer/CriticLabel
 @onready var game_released_money_label: Label = $UI/UIRoot/GameReleasedModal/MarginContainer/VBoxContainer/MoneyGainLabel
+@onready var consult_released_games_button: Button = $UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/ConsultRelesedGamesButton
+@onready var released_games_modal: PopupPanel = $UI/UIRoot/ReleasedGamesModal
+@onready var released_games_list_label: Label = $UI/UIRoot/ReleasedGamesModal/ReleasedGamesListLabel
 
 func _ready() -> void:
 	setup_theme_options()
@@ -129,6 +130,8 @@ func create_game() -> Game:
 	var theme : GameTheme
 	var platform : Platform
 	var error_messages : PackedStringArray
+	var note : int
+	var critic : String
 	if game_name.is_empty():
 		error_messages.append("Your game must have a name.")
 	if game_theme_select.selected == -1:
@@ -144,7 +147,7 @@ func create_game() -> Game:
 	else:
 		platform = platforms[game_platform_select.selected]
 	if error_messages.is_empty():
-		return Game.new(game_name,theme,genre,platform,game_development_duration)
+		return Game.new(game_name,theme,genre,platform,GamesData.game_development_duration)
 	game_modal_error_message.text = "\n".join(error_messages)
 	return null
 
@@ -160,11 +163,16 @@ func _on_create_button_pressed() -> void:
 func release_game() -> void:
 	var game_note := GameScoring.get_game_note(studio.game_in_development)
 	var game_critic := GameCritics.get_game_critic(game_note)
+	Game.game_score = game_note
+	Game.game_critic = game_critic
 	game_released_critic_label.text = game_critic
 	game_released_label.text = "Your game %s has been released!" % studio.game_in_development.game_name
 	score_released_label.text = "Score: %d/10" % game_note
 	studio.money += 1000 * game_note
 	game_released_money_label.text = "You earned %d $" % (1000 * game_note)
+	GamesData.games_released.append(studio.game_in_development)
+	for released_game in GamesData.games_released:
+		released_games_list_label.text += "- %s - Score: %d/10 - Critic: %s\n" % [released_game.game_name, released_game.game_score, released_game.game_critic]
 	game_clock.paused = true
 	game_released_modal.popup_centered(Vector2i(500, 400))
 
@@ -190,4 +198,12 @@ func _on_new_game_button_pressed() -> void:
 	game_over_modal.visible = false
 
 func _on_game_released_modal_popup_hide() -> void:
+	game_clock.paused = false
+
+func _on_consult_relesed_games_button_pressed() -> void:
+	action_menu.visible = false
+	game_clock.paused = true
+	released_games_modal.popup_centered(Vector2i(500, 400))
+
+func _on_released_games_modal_popup_hide() -> void:
 	game_clock.paused = false

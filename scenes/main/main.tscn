@@ -64,6 +64,10 @@ layout_mode = 2
 layout_mode = 2
 text = "Create new Game"
 
+[node name="ConsultRelesedGamesButton" type="Button" parent="UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer" unique_id=234413078]
+layout_mode = 2
+text = "Consult Released Games"
+
 [node name="CreateGameModal" type="PopupPanel" parent="UI/UIRoot" unique_id=222386159]
 size = Vector2i(400, 350)
 
@@ -170,14 +174,27 @@ layout_mode = 2
 [node name="MoneyGainLabel" type="Label" parent="UI/UIRoot/GameReleasedModal/MarginContainer/VBoxContainer" unique_id=1300558110]
 layout_mode = 2
 
+[node name="ReleasedGamesModal" type="PopupPanel" parent="UI/UIRoot" unique_id=1268792710]
+
+[node name="ModalTitleLabel" type="Label" parent="UI/UIRoot/ReleasedGamesModal" unique_id=393352034]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Released Games"
+
+[node name="ReleasedGamesListLabel" type="Label" parent="UI/UIRoot/ReleasedGamesModal" unique_id=399765165]
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="GameClock" type="Timer" parent="." unique_id=67344078]
 wait_time = 7.0
 
 [connection signal="popup_hide" from="UI/UIRoot/ActionMenu" to="." method="_on_action_menu_popup_hide"]
 [connection signal="pressed" from="UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/CreateGameButton" to="." method="_on_create_game_button_pressed"]
+[connection signal="pressed" from="UI/UIRoot/ActionMenu/MarginContainer/VBoxContainer/ConsultRelesedGamesButton" to="." method="_on_consult_relesed_games_button_pressed"]
 [connection signal="popup_hide" from="UI/UIRoot/CreateGameModal" to="." method="_on_create_game_modal_popup_hide"]
 [connection signal="pressed" from="UI/UIRoot/CreateGameModal/MarginContainer/VBoxContainer/HBoxContainer/CreateButton" to="." method="_on_create_button_pressed"]
 [connection signal="popup_hide" from="UI/UIRoot/GameOverModal" to="." method="_on_game_over_modal_popup_hide"]
 [connection signal="pressed" from="UI/UIRoot/GameOverModal/MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="popup_hide" from="UI/UIRoot/GameReleasedModal" to="." method="_on_game_released_modal_popup_hide"]
+[connection signal="popup_hide" from="UI/UIRoot/ReleasedGamesModal" to="." method="_on_released_games_modal_popup_hide"]
 [connection signal="timeout" from="GameClock" to="." method="_on_game_clock_timeout"]

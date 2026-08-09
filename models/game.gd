@@ -5,6 +5,8 @@ var game_theme : GameTheme
 var game_genre : Genre
 var game_platform : Platform
 var game_remaining_development_time : int
+var game_score : int
+var game_critic : String
 
 func _init(new_name: String, 
 		   new_theme: GameTheme, 

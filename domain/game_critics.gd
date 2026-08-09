@@ -9,5 +9,5 @@ static func get_game_critic(score : int) -> String:
 	if score <= 7:
 		return "Not bad"
 	if score <= 9:
-		return "A mist!"
+		return "A must!"
 	return "A new benchmark in the genre!"
