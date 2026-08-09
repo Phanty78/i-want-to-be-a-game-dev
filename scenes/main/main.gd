@@ -72,20 +72,17 @@ var genres: Array[Genre] = [
 	Genre.new("Casual"),
 ]
 
+var studio = Studio.new()
+
 var current_week := 1
 var weeks_count_for_month := 1
 var current_month := months[0]
 var current_month_index:= 0
 var current_year := 1
-var studio_money := 10_000
 # Exprimé en semaine
 var game_development_duration := 12
 # TO-DO : plus tard ces variables changeront dans le temps en fonction de divers paramétre
-var rent_cost := 500
-var life_cost := 250
 var create_game_menu_open := false
-var finished_games : Array[Game]
-var game_in_development : Game
 
 @onready var date_label: Label = $UI/UIRoot/HUD/HBoxContainer/DateLabel
 @onready var money_label: Label = $UI/UIRoot/HUD/HBoxContainer/MoneyLabel
@@ -126,16 +123,16 @@ func _on_game_clock_timeout() -> void:
 		current_week = 1
 		current_year += 1
 	
-	if game_in_development != null:
-		game_in_development.game_remaining_development_time -= 1
-		print(game_in_development.game_remaining_development_time)
-		if game_in_development.game_remaining_development_time <= 0:
+	if studio.game_in_development != null:
+		studio.game_in_development.game_remaining_development_time -= 1
+		print(studio.game_in_development.game_remaining_development_time)
+		if studio.game_in_development.game_remaining_development_time <= 0:
 			release_game()
-			finished_games.append(game_in_development)
-			game_in_development = null
+			studio.finished_games.append(studio.game_in_development)
+			studio.game_in_development = null
 			create_game_button.disabled = false
 	
-	if studio_money <= 0:
+	if studio.money <= 0:
 		game_clock.stop()
 		display_bankrupcy_modal()
 	update_hud()
@@ -148,19 +145,19 @@ func update_date_label() -> void:
 	]
 
 func update_money_label() -> void:
-	money_label.text = "Money: %d €" % studio_money
+	money_label.text = "Money: %d €" % studio.money
 
 func update_hud() -> void:
 	update_date_label()
 	update_money_label()
 
 func get_monthly_studio_cost() -> int:
-	return rent_cost + life_cost
+	return studio.rent_cost + studio.life_cost
 
 func update_current_month() -> void:
 	weeks_count_for_month += 1
 	if weeks_count_for_month > current_month.duration_in_weeks:
-		studio_money -= get_monthly_studio_cost()
+		studio.money -= get_monthly_studio_cost()
 		weeks_count_for_month = 1
 		current_month_index+= 1
 		if current_month_index> 11:
@@ -184,7 +181,7 @@ func _on_action_menu_popup_hide() -> void:
 		game_clock.paused = false
 
 func _on_create_game_button_pressed() -> void:
-	if not game_in_development:
+	if not studio.game_in_development:
 		create_game_menu_open = true
 		action_menu.visible = false
 		create_game_modal.popup_centered(Vector2i(500, 400))
@@ -241,18 +238,18 @@ func _on_create_button_pressed() -> void:
 	var game := create_game()
 	if game:
 		create_game_button.disabled = true
-		game_in_development = game
+		studio.game_in_development = game
 		game_modal_error_message.text = ""
 		game_name_input.text = ""
 		create_game_modal.visible = false
 
 func release_game() -> void:
-	var game_note := get_game_note(game_in_development)
+	var game_note := get_game_note(studio.game_in_development)
 	var game_critic := get_game_critic(game_note)
 	game_released_critic_label.text = game_critic
-	game_released_label.text = "Your game %s has been released!" % game_in_development.game_name
+	game_released_label.text = "Your game %s has been released!" % studio.game_in_development.game_name
 	score_released_label.text = "Score: %d/10" % game_note
-	studio_money += 1000 * game_note
+	studio.money += 1000 * game_note
 	game_released_money_label.text = "You earned %d $" % (1000 * game_note)
 	game_clock.paused = true
 	game_released_modal.popup_centered(Vector2i(500, 400))
@@ -265,7 +262,7 @@ func get_game_note(game: Game) -> int:
 	return clampi(base + affinity, 1, 10)
 
 func display_bankrupcy_modal() -> void:
-	if studio_money <= 0:
+	if studio.money <= 0:
 		game_over_modal_label.text = "Game Over! You ran out of money."
 	game_over_modal.popup_centered(Vector2i(320, 160))
 
@@ -275,9 +272,9 @@ func reset_game() -> void:
 	current_month = months[0]
 	current_month_index= 0
 	current_year = 1
-	studio_money = 10_000
-	game_in_development = null
-	finished_games.clear()
+	studio.money = 10_000
+	studio.game_in_development = null
+	studio.finished_games.clear()
 	game_clock.start(WEEK_DURATION_SECONDS)
 	update_hud()
 
