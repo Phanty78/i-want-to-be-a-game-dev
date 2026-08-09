@@ -43,13 +43,9 @@ func setup_theme_affinities() -> void:
 	ThemeAffinityData.setup(themes, genres)
 
 func _on_game_clock_timeout() -> void:
-	game_calendar.current_week += 1
-
-	update_current_month()
-
-	if game_calendar.current_week > game_calendar.WEEKS_PER_YEAR:
-		game_calendar.current_week = 1
-		game_calendar.current_year += 1
+	game_calendar.advance_week()
+	pay_monthly_studio_cost()
+	game_calendar.advance_month()
 	
 	if studio.game_in_development != null:
 		studio.game_in_development.game_remaining_development_time -= 1
@@ -82,17 +78,10 @@ func update_hud() -> void:
 func get_monthly_studio_cost() -> int:
 	return studio.rent_cost + studio.life_cost
 
-func update_current_month() -> void:
-	game_calendar.weeks_count_for_month += 1
-	if game_calendar.weeks_count_for_month > game_calendar.current_month.duration_in_weeks:
+func pay_monthly_studio_cost() -> void:
+	# Ici le plus 1 permet d'anticiper. Car la valeur réelle ne change que lors de l'appel de la fonction advance_month
+	if game_calendar.weeks_count_for_month + 1 > game_calendar.current_month.duration_in_weeks:
 		studio.money -= get_monthly_studio_cost()
-		game_calendar.weeks_count_for_month = 1
-		game_calendar.current_month_index += 1
-		if game_calendar.current_month_index > 11:
-			game_calendar.current_month = game_calendar.months[0]
-			game_calendar.current_month_index = 0
-		else :
-			game_calendar.current_month = game_calendar.months[game_calendar.current_month_index]
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
