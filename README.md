@@ -3,6 +3,10 @@
 **Projet d'apprentissage Godot 4.7** : un clone simplifié de *Game Dev Tycoon*.
 C'est un prototype, pas un jeu distribué : il se lance depuis l'éditeur Godot (F5), il n'y a pas encore de build exporté.
 
+![Écran principal du prototype](docs/screenshot.png)
+
+*Capture réelle du prototype lancé avec Godot 4.7.2 (640×360, résolution interne).*
+
 ## Intention
 
 Ce jeu est volontairement un clone simplifié de Game Dev Tycoon.
@@ -27,8 +31,14 @@ Il a pour but l'apprentissage de Godot : scènes, signaux, machine à états, do
 
 ## Lancer le projet
 
-Ouvrir le projet dans Godot 4.7+ et appuyer sur ▶ (F5).
-Le jeu démarre directement sur l'écran principal.
+Version vérifiée : **Godot 4.7** (`config/features=PackedStringArray("4.7", "Forward Plus")`
+dans `project.godot`) ; la capture ci-dessus a été produite avec Godot 4.7.2.
+
+1. Ouvrir Godot, puis « Importer » et sélectionner le fichier `project.godot`.
+2. Laisser l'éditeur terminer l'importation des ressources au premier lancement.
+3. Appuyer sur ▶ ou F5 : le jeu démarre directement sur l'écran principal.
+
+L'export en exécutable n'est pas configuré ; il n'y a ni build web ni build desktop.
 
 ## Crédits — Audio
 
@@ -43,3 +53,8 @@ Les assets sonores listés ci-dessous sont sous licence libre d'usage commercial
 
 Les fichiers texte de licence détaillés se trouvent dans `Assets/audio/licences/`.
 Les crédits des graphismes restent à compléter avant toute diffusion.
+
+## Licence
+
+MIT — voir [LICENSE](LICENSE). Les crédits audio et leurs licences respectives
+sont détaillés ci-dessus.
